@@ -24,3 +24,5 @@ Thumbs.db
 .idea/
 *.swp
 
+drupal_backup.sql
+web/sites/default/settings.php
