@@ -1,20 +1,18 @@
 #!/bin/bash
 
-echo "🚀 Starting Docker containers..."
-docker-compose up -d
+echo "🚀 Starting containers..."
+docker-compose up -d --build
 
-echo "⏳ Waiting for the database to initialize..."
-sleep 15
+echo "⏳ Waiting for database to initialize..."
+sleep 20
 
-echo "✅ Setting permissions for settings.php..."
+echo "📄 Setting up settings.php..."
+docker exec -it drupal_web bash -c "cp -n sites/default/default.settings.php sites/default/settings.php && chmod 664 sites/default/settings.php && chown www-data:www-data sites/default/settings.php"
 
-docker exec -it drupal_web bash -c "cp sites/default/default.settings.php sites/default/settings.php && chmod 664 sites/default/settings.php && chown www-data:www-data sites/default/settings.php"
+echo "💾 Importing drupal_backup.sql..."
+docker exec -i drupal_db mysql -udrupal -pdrupal drupal < drupal_backup.sql
 
-echo "✅ Setup complete!"
-echo "Open your browser at: http://localhost:8080"
-echo "Use these DB settings during installation:"
-echo "  DB host: db"
-echo "  DB name: drupal"
-echo "  DB user: drupal"
-echo "  DB password: drupal"
+echo "🔁 Running drush cr..."
+docker exec -it drupal_web ./vendor/bin/drush cr || echo "Drush not found"
 
+echo "✅ Drupal is ready at: http://<EC2-IP>:8080"
