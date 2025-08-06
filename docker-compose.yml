@@ -1,16 +1,6 @@
 version: '3.8'
 
 services:
-  web:
-    image: drupal:11-php8.3-apache
-    container_name: drupal_web
-    ports:
-      - "8090:80"
-    volumes:
-      - ./web:/var/www/html
-    depends_on:
-      - db
-
   db:
     image: mariadb:10.6
     container_name: drupal_db
@@ -23,6 +13,19 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
+  web:
+    image: drupal:11-php8.3-apache
+    container_name: drupal_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./web:/var/www/html
+    depends_on:
+      - db
+    environment:
+      # Optional but good practice:
+      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+      - PHP_OPCACHE_REVALIDATE_FREQ=0
+
 volumes:
   db_data:
-

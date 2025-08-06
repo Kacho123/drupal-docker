@@ -1,6 +1,6 @@
 # Ignore Drupal core files that change or are generated
 /web/sites/default/files/
-/web/sites/default/settings.php
+web/sites/default/settings.php
 
 # Ignore composer vendor (if using composer)
 /vendor/
@@ -24,5 +24,3 @@ Thumbs.db
 .idea/
 *.swp
 
-drupal_backup.sql
-web/sites/default/settings.php
