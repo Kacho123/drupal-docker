@@ -17,7 +17,7 @@ services:
     image: drupal:11-php8.3-apache
     container_name: drupal_web
     ports:
-      - "8080:80"
+      - "8090:80"
     volumes:
       - ./web:/var/www/html
     depends_on:
