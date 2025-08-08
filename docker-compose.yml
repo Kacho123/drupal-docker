@@ -1,10 +1,8 @@
 version: '3.8'
 
 services:
-  db:
+  drupal_db:
     image: mariadb:10.6
-    container_name: drupal_db
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: drupal
@@ -12,20 +10,16 @@ services:
       MYSQL_PASSWORD: drupal
     volumes:
       - db_data:/var/lib/mysql
-      - ./drupal_backup.sql:/drupal_backup.sql  # ✅ Added this line
+      - /var/jenkins_home/sql_backups:/sql  # 👈 Mount SQL backup folder from Jenkins
 
-  web:
+  drupal_web:
     image: drupal:11-php8.3-apache
-    container_name: drupal_web
     ports:
       - "8090:80"
     volumes:
       - ./web:/var/www/html
     depends_on:
-      - db
-    environment:
-      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
-      - PHP_OPCACHE_REVALIDATE_FREQ=0
+      - drupal_db
 
 volumes:
   db_data:
