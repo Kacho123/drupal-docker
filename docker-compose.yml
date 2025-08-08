@@ -12,6 +12,7 @@ services:
       MYSQL_PASSWORD: drupal
     volumes:
       - db_data:/var/lib/mysql
+      - ./drupal_backup.sql:/drupal_backup.sql  # ✅ Added this line
 
   web:
     image: drupal:11-php8.3-apache
@@ -23,9 +24,9 @@ services:
     depends_on:
       - db
     environment:
-      # Optional but good practice:
       - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
       - PHP_OPCACHE_REVALIDATE_FREQ=0
 
 volumes:
   db_data:
+

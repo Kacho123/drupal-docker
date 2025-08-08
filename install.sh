@@ -18,7 +18,7 @@ docker exec drupal_web bash -c "cp -n sites/default/default.settings.php sites/d
 
 # 💾 Import SQL dump
 echo "💾 Importing drupal_backup.sql..."
-docker exec -i drupal_db mysql -udrupal -pdrupal drupal < drupal_backup.sql
+docker exec drupal_db sh -c "mysql -udrupal -pdrupal drupal < /drupal_backup.sql"
 
 # 🔁 Clear Drupal cache
 echo "🔁 Running drush cr..."
@@ -26,4 +26,5 @@ docker exec drupal_web ./vendor/bin/drush cr || echo "⚠️ Drush not found or 
 
 # ✅ Done
 echo "✅ Drupal is ready at: http://localhost:8090"
+
 
